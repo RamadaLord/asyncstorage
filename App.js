@@ -1,4 +1,6 @@
 import { StatusBar } from "expo-status-bar";
+import apiLocal from "./api/apiLocal";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 import {
   Text,
@@ -20,7 +22,13 @@ export default function App() {
     return alert(senha);
   }
 
-  function handleLogin() {
+  async function handleLogin() {
+    
+    const resposta = await apiLocal.post('/LogInMotoqueiros',{
+      nusuario,
+      senha
+    })
+    
     if (!usuario || !senha) {
       return alert("Campos Em Branco");
     }

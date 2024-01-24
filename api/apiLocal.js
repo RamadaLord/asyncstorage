@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const apiLocal = axio.create({
+const apiLocal = axios.create({
     baseUrl:
-        "http://10.152.46.27:3306"
+        "http://10.152.46.27:3333"
     
 })
 
