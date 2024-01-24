@@ -12,33 +12,46 @@ import {
 import { styles } from "./style";
 
 export default function App() {
-  const [usuario, setUsuario] = useState("");
+  const [nusuario, setNusuario] = useState("");
   const [senha, setSenha] = useState("");
+  const [respNome, setRespNome] = useState("");
+  const [respToken, setRespToken] = useState("");
 
-  function handleAsyncNome() {
-    return alert(usuario);
-  }
-  function handleAsyncSenha() {
-    return alert(senha);
-  }
-
+  
   async function handleLogin() {
-    
-    const resposta = await apiLocal.post('/LogInMotoqueiros',{
-      nusuario,
-      senha
-    })
-    
-    if (!usuario || !senha) {
+    try {
+      const resposta = await apiLocal.post("/LogInMotoqueiros", {
+        nusuario,
+        senha,
+      });
+      await AsyncStorage.setItem("@nome", JSON.stringify(resposta.data.nome));
+      await AsyncStorage.setItem("@token", JSON.stringify(resposta.data.token));
+    } catch (error) {}
+
+    if (!nusuario || !senha) {
       return alert("Campos Em Branco");
     }
-    console.log(usuario, senha)
-    alert(usuario, senha)
+    console.log(nusuario, senha);
+    alert(nusuario, senha);
 
     setUsuario("");
     setSenha("");
+    async function handleAsyncNome() {
+      const iNome = await AsyncStorage.getItem('@nome')
+      const nome = JSON.parse(iNome)
+      setRespToken('')
+      setRespNome(nome)
+      return alert(nusuario); 
+    }
+    async function handleAsyncSenha() {
+      const iToken = await AsyncStorage.getItem('@token')
+      const token = JSON.parse(iToken)
+      setRespNome('')
+      setRespToken(token)
+      return alert(senha);
+    }
   }
-
+  
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -49,9 +62,9 @@ export default function App() {
       <View>
         <Text>Usuario:</Text>
         <TextInput
-          value={usuario}
+          value={nusuario}
           style={styles.input}
-          onChangeText={(text) => setUsuario(text)}
+          onChangeText={(text) => setNusuario(text)}
           placeholder="Digite Seu Usuario"
         />
         <Text>Senha:</Text>
@@ -73,6 +86,8 @@ export default function App() {
           <Text>Async_Senha</Text>
         </TouchableOpacity>
       </View>
+      <Text>{respNome}</Text>
+      <Text>{respToken}</Text>
     </SafeAreaView>
   );
 }
