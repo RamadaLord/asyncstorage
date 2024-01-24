@@ -1,20 +1,70 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { useState } from "react";
+import {
+  Text,
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
+import { styles } from "./style";
 
 export default function App() {
+  const [usuario, setUsuario] = useState("");
+  const [senha, setSenha] = useState("");
+
+  function handleAsyncNome() {
+    return alert(usuario);
+  }
+  function handleAsyncSenha() {
+    return alert(senha);
+  }
+
+  function handleLogin() {
+    if (!usuario || !senha) {
+      return alert("Campos Em Branco");
+    }
+    console.log(usuario, senha)
+    alert(usuario, senha)
+
+    setUsuario("");
+    setSenha("");
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+    <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
-    </View>
+      <View>
+        <Text style={styles.cabecalho}>LogIn</Text>
+      </View>
+
+      <View>
+        <Text>Usuario:</Text>
+        <TextInput
+          value={usuario}
+          style={styles.input}
+          onChangeText={(text) => setUsuario(text)}
+          placeholder="Digite Seu Usuario"
+        />
+        <Text>Senha:</Text>
+        <TextInput
+          value={senha}
+          style={styles.input}
+          onChangeText={(text) => setSenha(text)}
+          secureTextEntry={true}
+          keyboardType="numeric"
+          placeholder="Digite Sua Senha"
+        />
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text>Send</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button2} onPress={handleAsyncNome}>
+          <Text>Async_Nome</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button3} onPress={handleAsyncSenha}>
+          <Text>Async_Senha</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
