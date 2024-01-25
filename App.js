@@ -20,36 +20,38 @@ export default function App() {
   
   async function handleLogin() {
     try {
-      const resposta = await apiLocal.post("/LogInMotoqueiros", {
+      const resposta = await apiLocal.post("/LoginMotoqueiros", {
         nusuario,
         senha,
       });
       await AsyncStorage.setItem("@nome", JSON.stringify(resposta.data.nome));
       await AsyncStorage.setItem("@token", JSON.stringify(resposta.data.token));
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    }
 
     if (!nusuario || !senha) {
       return alert("Campos Em Branco");
     }
-    console.log(nusuario, senha);
-    alert(nusuario, senha);
+    
+  }
+  async function handleAsyncNome() {
+    const iNome = await AsyncStorage.getItem('@nome')
+    const nome = JSON.parse(iNome)
+    setRespToken('')
+    setRespNome(nome)
+    // return alert(nusuario); 
+  }
+  async function handleAsyncSenha() {
+    const iToken = await AsyncStorage.getItem('@token')
+    const token = JSON.parse(iToken)
+    setRespNome('')
+    setRespToken(token)
+    // return alert(senha);
+  }
 
-    setUsuario("");
-    setSenha("");
-    async function handleAsyncNome() {
-      const iNome = await AsyncStorage.getItem('@nome')
-      const nome = JSON.parse(iNome)
-      setRespToken('')
-      setRespNome(nome)
-      return alert(nusuario); 
-    }
-    async function handleAsyncSenha() {
-      const iToken = await AsyncStorage.getItem('@token')
-      const token = JSON.parse(iToken)
-      setRespNome('')
-      setRespToken(token)
-      return alert(senha);
-    }
+  async function AsyncClear(){
+    await AsyncClear.removeItem('@nome','@token')
   }
   
   return (
@@ -82,8 +84,11 @@ export default function App() {
         <TouchableOpacity style={styles.button2} onPress={handleAsyncNome}>
           <Text>Async_Nome</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button3} onPress={handleAsyncSenha}>
-          <Text>Async_Senha</Text>
+        <TouchableOpacity style={styles.button3} onPress={handleAsyncSenha} >
+          <Text>Async_Token</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button3} onPress={AsyncClear} >
+          <Text>Async_Clear</Text>
         </TouchableOpacity>
       </View>
       <Text>{respNome}</Text>
