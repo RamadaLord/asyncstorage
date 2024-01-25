@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
         width: 175,
         height: 30,
         backgroundColor: "#9C90E0",
-      }
+      },
     button2: {
         borderWidth: 1,
         alignItems: "center",
